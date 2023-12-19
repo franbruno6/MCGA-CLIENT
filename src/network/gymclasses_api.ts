@@ -32,6 +32,17 @@ export async function createGymClass(gymClass: GymClassInput): Promise<GymClass>
     return response.json();
 }
 
+export async function updateGymClass(gymClassId: string, gymClass: GymClassInput): Promise<GymClass> {
+    const response = await fetchData('api/gymclasses/' + gymClassId, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(gymClass)
+    });
+    return response.json();
+}
+
 export async function deleteGymClass(gymClassId: string) {
     await fetchData("/api/gymclasses/" + gymClassId, {method: 'DELETE'});
 }

@@ -4,18 +4,29 @@ import { useForm } from "react-hook-form";
 import { GymClassInput } from "../network/gymclasses_api";
 import * as GymClassesApi from "../network/gymclasses_api";
 
-interface AddGymClassDialogProps {
+interface AddEditGymClassDialogProps {
+    gymClassToEdit?: GymClass;
     onDismiss: () => void;
     onGymClassSaved: (gymClass: GymClass) => void;
 }
 
-const AddGymClassDialog = ({onDismiss, onGymClassSaved}: AddGymClassDialogProps) => {
+const AddEditGymClassDialog = ({gymClassToEdit, onDismiss, onGymClassSaved}: AddEditGymClassDialogProps) => {
 
-    const { register, handleSubmit, formState : { errors, isSubmitting } } = useForm<GymClassInput>();
+    const { register, handleSubmit, formState : { errors, isSubmitting } } = useForm<GymClassInput>({
+        defaultValues: {
+            title: gymClassToEdit?.title || "",
+            text: gymClassToEdit?.text || "",
+        }
+    });
 
     async function onSubmit(input: GymClassInput) {
         try {
-            const gymClassResponse = await GymClassesApi.createGymClass(input);
+            let gymClassResponse: GymClass;
+            if (gymClassToEdit) {
+                gymClassResponse = await GymClassesApi.updateGymClass(gymClassToEdit._id, input);
+            } else {
+                gymClassResponse = await GymClassesApi.createGymClass(input);
+            }
             onGymClassSaved(gymClassResponse);
         } catch (error) {
             console.error(error);
@@ -27,12 +38,12 @@ const AddGymClassDialog = ({onDismiss, onGymClassSaved}: AddGymClassDialogProps)
         <Modal show onHide={onDismiss}>
             <Modal.Header closeButton>
                 <Modal.Title>
-                    Add Gym Class
+                    {gymClassToEdit ? "Edit Gym Class" : "Add Gym Class"}
                 </Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
-                <Form id="addGymClassForm" onSubmit={handleSubmit(onSubmit)}>
+                <Form id="addEditGymClassForm" onSubmit={handleSubmit(onSubmit)}>
                     <Form.Group className="mb-3">
                         <Form.Label>Title</Form.Label>
                         <Form.Control
@@ -60,7 +71,7 @@ const AddGymClassDialog = ({onDismiss, onGymClassSaved}: AddGymClassDialogProps)
             <Modal.Footer>
                 <Button
                 type="submit"
-                form="addGymClassForm"
+                form="addEditGymClassForm"
                 disabled={isSubmitting}
                 >
                     Save
@@ -70,4 +81,4 @@ const AddGymClassDialog = ({onDismiss, onGymClassSaved}: AddGymClassDialogProps)
     );
 }
 
-export default AddGymClassDialog;
+export default AddEditGymClassDialog;

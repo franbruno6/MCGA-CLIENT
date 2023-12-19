@@ -7,11 +7,12 @@ import { MdDelete } from "react-icons/md";
 
 interface GymClassProps {
     gymClass: GymClassModel,
+    onGymClassClicked: (gymClass: GymClassModel) => void,
     onDeleteGymClassClicked: (gymClass: GymClassModel) => void,
     className?: string,
 }
 
-const GymClass = ({ gymClass, onDeleteGymClassClicked, className }: GymClassProps) => {
+const GymClass = ({ gymClass, onGymClassClicked, onDeleteGymClassClicked, className }: GymClassProps) => {
     const { 
         title,
         text,
@@ -27,7 +28,10 @@ const GymClass = ({ gymClass, onDeleteGymClassClicked, className }: GymClassProp
     }
 
     return (
-        <Card className={`${styles.gymClassCard} ${className}`}>
+        <Card
+        className={`${styles.gymClassCard} ${className}`}
+        onClick={() => onGymClassClicked(gymClass)}
+        >
         <Card.Body className={styles.cardBody}>
             <Card.Title className={stylesUtils.flexCenter}>
             {title}
