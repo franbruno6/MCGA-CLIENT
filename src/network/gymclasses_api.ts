@@ -31,3 +31,7 @@ export async function createGymClass(gymClass: GymClassInput): Promise<GymClass>
     });
     return response.json();
 }
+
+export async function deleteGymClass(gymClassId: string) {
+    await fetchData("/api/gymclasses/" + gymClassId, {method: 'DELETE'});
+}

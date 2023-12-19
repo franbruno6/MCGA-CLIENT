@@ -6,6 +6,7 @@ import styles from './styles/GymClassesPage.module.css';
 import stylesUtils from './styles/utils.module.css';
 import * as GymClassesApi from './network/gymclasses_api';
 import ShowAddGymClassDialog from './components/AddGymClassDialog';
+import { FaPlus } from 'react-icons/fa';
 
 function App() {
     const [gymClasses, setGymClasses] = useState<GymClassModel[]>([]);
@@ -25,17 +26,31 @@ function App() {
         loadGymClasses();
     }, []);
 
+    async function deleteGymClass(gymClass: GymClassModel) {
+        try {
+            await GymClassesApi.deleteGymClass(gymClass._id);
+            setGymClasses(gymClasses.filter(existingGymClass => existingGymClass._id !== gymClass._id));
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <Container>
             <Button
-                className={`mb-4 ${stylesUtils.blockCenter}`}
+                className={`mb-4 ${stylesUtils.blockCenter} ${stylesUtils.flexCenter}`}
                 onClick={() => setShowAddGymClassDialog(true)}>
+                <FaPlus />
                 Add Gym Class
             </Button>
             <Row xs={1} md={2} lg={3} className="g-4">
                 {gymClasses.map(gymClass => (
                     <Col key={gymClass._id}>
-                        <GymClass gymClass={gymClass} className={styles.gymClass}/>
+                        <GymClass
+                        gymClass={gymClass}
+                        className={styles.gymClass}
+                        onDeleteGymClassClicked={deleteGymClass}
+                        />
                     </Col>
                 ))}
             </Row>
