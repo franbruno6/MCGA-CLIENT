@@ -3,11 +3,12 @@ import { GymClass } from "../models/gymclass";
 import { useForm } from "react-hook-form";
 import { GymClassInput } from "../network/gymclasses_api";
 import * as GymClassesApi from "../network/gymclasses_api";
+import TextInputField from "./form/TextInputField";
 
 interface AddEditGymClassDialogProps {
-    gymClassToEdit?: GymClass;
-    onDismiss: () => void;
-    onGymClassSaved: (gymClass: GymClass) => void;
+    gymClassToEdit?: GymClass,
+    onDismiss: () => void,
+    onGymClassSaved: (gymClass: GymClass) => void,
 }
 
 const AddEditGymClassDialog = ({gymClassToEdit, onDismiss, onGymClassSaved}: AddEditGymClassDialogProps) => {
@@ -43,28 +44,26 @@ const AddEditGymClassDialog = ({gymClassToEdit, onDismiss, onGymClassSaved}: Add
             </Modal.Header>
 
             <Modal.Body>
+                
                 <Form id="addEditGymClassForm" onSubmit={handleSubmit(onSubmit)}>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Title</Form.Label>
-                        <Form.Control
+                    <TextInputField
+                        name="title"
+                        label="Title"
                         type="text"
                         placeholder="Title"
-                        isInvalid={!!errors.title}
-                        {...register("title", { required: true })}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            {errors.title?.message}
-                        </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Description</Form.Label>
-                        <Form.Control
+                        register={register}
+                        registerOptions={{ required: "Required" }}
+                        error={errors.title}
+                    />
+                    
+                    <TextInputField
+                        name="text"
+                        label="Text"
                         as="textarea"
                         rows={5}
                         placeholder="Text"
-                        {...register("text")}
-                        />
-                    </Form.Group>
+                        register={register}
+                    />
                 </Form>
             </Modal.Body>
 

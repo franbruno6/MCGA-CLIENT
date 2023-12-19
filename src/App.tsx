@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
-import { GymClass as GymClassModel } from './models/gymclass';
-import GymClass from './components/GymClass';
-import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
-import styles from './styles/GymClassesPage.module.css';
-import stylesUtils from './styles/utils.module.css';
-import * as GymClassesApi from './network/gymclasses_api';
-import ShowAddEditGymClassDialog from './components/AddEditGymClassDialog';
-import { FaPlus } from 'react-icons/fa';
-import { set } from 'react-hook-form';
-import AddEditGymClassDialog from './components/AddEditGymClassDialog';
+import { useEffect, useState } from "react";
+import { GymClass as GymClassModel } from "./models/gymclass";
+import GymClass from "./components/GymClass";
+import { Container, Row, Col, Button, Spinner } from "react-bootstrap";
+import styles from "./styles/GymClassesPage.module.css";
+import stylesUtils from "./styles/utils.module.css";
+import * as GymClassesApi from "./network/gymclasses_api";
+import ShowAddEditGymClassDialog from "./components/AddEditGymClassDialog";
+import { FaPlus } from "react-icons/fa";
+import { set } from "react-hook-form";
+import AddEditGymClassDialog from "./components/AddEditGymClassDialog";
 
 function App() {
     const [gymClasses, setGymClasses] = useState<GymClassModel[]>([]);
@@ -66,7 +66,7 @@ function App() {
                 <FaPlus />
                 Add Gym Class
             </Button>
-            {gymClassesLoading && <Spinner animation='border' variant='primary' />}
+            {gymClassesLoading && <Spinner animation="border" variant="primary" />}
             {showGymClassesLoadingError && <p>Error loading gym classes, please refresh the page</p>}
             {!gymClassesLoading && !showGymClassesLoadingError &&
             <>
