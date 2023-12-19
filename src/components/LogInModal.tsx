@@ -20,6 +20,7 @@ const LogInModal = ({onDismiss, onLogInSuccesful}: LogInModalProps) => {
             const user = await GymClassesApi.logIn(credentials);
             onLogInSuccesful(user);
         } catch (error) {
+            alert(error);
             console.error(error);
         }
     }
@@ -49,22 +50,17 @@ const LogInModal = ({onDismiss, onLogInSuccesful}: LogInModalProps) => {
                         type="password"
                         placeholder="Password"
                         register={register}
-                        registerOptions={{required: "Required"}}
+                        registerOptions={{ required: "Required" }}
                         error={errors.password}
                     />
                     <Button
                         type="submit"
                         disabled={isSubmitting}
-                        className={styleUtils.widht100}>
+                        className={styleUtils.width100}>
                         Log In
                     </Button>
                 </Form>
             </Modal.Body>
-
-            <Modal.Footer>
-                <Button variant="secondary" onClick={onDismiss}>Cancel</Button>
-                <Button variant="primary" form="logInForm" type="submit" disabled={isSubmitting}>Log In</Button>
-            </Modal.Footer>
         </Modal>
     )
 }

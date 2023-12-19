@@ -18,7 +18,6 @@ const TextInputField = ({name, label, register, registerOptions, error, ...props
                 {...props}
                 {...register(name, registerOptions)}
                 isInvalid={!!error}
-                type="text"
             />
             <Form.Control.Feedback type="invalid">
                 {error?.message}

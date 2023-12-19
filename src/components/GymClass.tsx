@@ -1,9 +1,12 @@
+import { useEffect, useState } from "react";
+import { Card } from "react-bootstrap";
+import { MdDelete } from "react-icons/md";
+import { GymClass as GymClassModel } from "../models/gymclass";
+import { User } from "../models/user";
+import * as GymClassesApi from "../network/gymclasses_api";
 import styles from "../styles/GymClass.module.css";
 import stylesUtils from "../styles/utils.module.css";
-import { Card } from "react-bootstrap"
-import { GymClass as GymClassModel } from "../models/gymclass"
 import { formateDate } from "../utils/formateDate";
-import { MdDelete } from "react-icons/md";
 
 interface GymClassProps {
     gymClass: GymClassModel,
@@ -27,6 +30,20 @@ const GymClass = ({ gymClass, onGymClassClicked, onDeleteGymClassClicked, classN
         createdUpdatedText = "Created: " + formateDate(createdAt);
     }
 
+    const [loggedInUser, setLoggedInUser] = useState<User|null>(null);
+
+    useEffect(() => {
+        async function fetchLoggedUser() {
+            try {
+                const user = await GymClassesApi.getLoggedInUser();
+                setLoggedInUser(user);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchLoggedUser();
+    }, []);	
+
     return (
         <Card
         className={`${styles.gymClassCard} ${className}`}
@@ -35,13 +52,18 @@ const GymClass = ({ gymClass, onGymClassClicked, onDeleteGymClassClicked, classN
         <Card.Body className={styles.cardBody}>
             <Card.Title className={stylesUtils.flexCenter}>
             {title}
-            <MdDelete
+            
+            { loggedInUser
+            ? <MdDelete
             className="text-muted ms-auto"
             onClick={(e) => {
                 onDeleteGymClassClicked(gymClass);
                 e.stopPropagation();
             }}
             />
+            : <></>
+            }
+            
             </Card.Title>
             <Card.Text className={styles.cardText}>
             {text}
