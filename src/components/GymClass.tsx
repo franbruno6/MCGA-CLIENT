@@ -42,7 +42,7 @@ const GymClass = ({ gymClass, onGymClassClicked, onDeleteGymClassClicked, classN
             }
         }
         fetchLoggedUser();
-    }, []);	
+    }, []);
 
     return (
         <Card
