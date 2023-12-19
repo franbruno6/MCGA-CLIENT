@@ -1,25 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react';
+import { GymClass as GymClassModel } from './models/gymclass';
+import GymClass from './components/GymClass';
+import { Container, Row, Col } from 'react-bootstrap';
+import styles from '.styles/GymClassPage.module.css';
 
 function App() {
+  const [gymClasses, setGymClasses] = useState<GymClassModel[]>([]);
+  
+  useEffect(() => {
+    async function loadGymClasses() {
+      try {
+        const response = await fetch('api/gymclasses', {method: 'GET'});
+        const gymClasses = await response.json();
+        setGymClasses(gymClasses);
+      } catch (error) {
+        console.error(error);
+        alert(error);
+      }
+    }
+    loadGymClasses();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <Row xs={1} md={2} lg={3} className="g-4">
+      {gymClasses.map(gymClass => (
+        <Col key={gymClass._id}>
+        <GymClass gymClass={gymClass} className={styles.gymClass}/>
+        </Col>
+      ))}
+      </Row>
+    </Container>
   );
 }
 
