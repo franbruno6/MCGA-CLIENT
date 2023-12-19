@@ -9,6 +9,7 @@ import ShowAddEditGymClassDialog from "./components/AddEditGymClassDialog";
 import { FaPlus } from "react-icons/fa";
 import { set } from "react-hook-form";
 import AddEditGymClassDialog from "./components/AddEditGymClassDialog";
+import LogInModal from "./components/LogInModal";
 
 function App() {
     const [gymClasses, setGymClasses] = useState<GymClassModel[]>([]);
@@ -95,6 +96,13 @@ function App() {
                         setGymClasses(gymClasses.map(existingGymClass => existingGymClass._id === updatedGymClass._id ? updatedGymClass : existingGymClass));
                         setGymClassToEdit(null);
                     }}
+                />
+            }
+            {
+                false &&
+                <LogInModal
+                    onDismiss={() => {}}
+                    onLogInSuccesful={() => {}}
                 />
             }
         </Container>
