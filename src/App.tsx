@@ -10,6 +10,7 @@ import { FaPlus } from "react-icons/fa";
 import { set } from "react-hook-form";
 import AddEditGymClassDialog from "./components/AddEditGymClassDialog";
 import LogInModal from "./components/LogInModal";
+import NavBar from "./components/NavBar";
 
 function App() {
     const [gymClasses, setGymClasses] = useState<GymClassModel[]>([]);
@@ -60,6 +61,13 @@ function App() {
     </Row>
 
     return (
+        <div>
+            <NavBar 
+            loggedInUser={null}
+            onLoggedInClicked={() => {}}
+            onLogOutSuccesful={() => {}}
+            />
+        
         <Container className={styles.gymClassesPage}>
             <Button
                 className={`mb-4 ${stylesUtils.blockCenter} ${stylesUtils.flexCenter}`}
@@ -106,6 +114,7 @@ function App() {
                 />
             }
         </Container>
+        </div>
     );
 }
 
