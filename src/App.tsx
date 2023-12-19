@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { GymClass as GymClassModel } from './models/gymclass';
 import GymClass from './components/GymClass';
 import { Container, Row, Col } from 'react-bootstrap';
-import styles from '.styles/GymClassPage.module.css';
+import styles from './styles/GymClassesPage.module.css';
 
 function App() {
   const [gymClasses, setGymClasses] = useState<GymClassModel[]>([]);
