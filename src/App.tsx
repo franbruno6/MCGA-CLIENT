@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
-import GymClassesLoggedInView from "./components/GymClassesLoggedInView";
-import GymClassesLoggedOutView from "./components/GymClassesLoggedOutView";
 import LogInModal from "./components/LogInModal";
 import NavBar from "./components/NavBar";
 import { User } from "./models/user";
 import * as GymClassesApi from "./network/gymclasses_api";
-import styles from "./styles/GymClassesPage.module.css";
-import { set } from "react-hook-form";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Container } from "react-bootstrap";
+import GymClassesPage from "./pages/GymClassesPage";
+import PrivacyPage from "./pages/PrivacyPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import styles from "./styles/App.module.css";
+
 
 function App() {
     
@@ -28,31 +30,42 @@ function App() {
     }, []);	
 
     return (
-        <div>
-            <NavBar 
-                loggedInUser={loggedInUser}
-                onLoggedInClicked={() => setShowLogInModal(true)}
-                onLogOutSuccesful={() => setLoggedInUser(null)}
-            />
-        
-        <Container className={styles.gymClassesPage}>
-            <>
-            { loggedInUser
-            ? <GymClassesLoggedInView />
-            : <GymClassesLoggedOutView />
-            }
-            </>
-        </Container>
-            {showLogInModal &&
-                    <LogInModal
-                        onDismiss={() => {setShowLogInModal(false)}}
-                        onLogInSuccesful={(user) => {
-                            setLoggedInUser(user);
-                            setShowLogInModal(false);
-                        }}
-                    />
-            }
-        </div>
+        <BrowserRouter>
+            <div>
+                <NavBar 
+                    loggedInUser={loggedInUser}
+                    onLoggedInClicked={() => setShowLogInModal(true)}
+                    onLogOutSuccesful={() => setLoggedInUser(null)}
+                />
+
+                <Container className={styles.pageContainer}>
+                    <Routes>
+                        <Route
+                        path="/"
+                        element={<GymClassesPage loggedInUser={loggedInUser} />} 
+                        />
+                        <Route
+                        path="/privacy"
+                        element={<PrivacyPage />} 
+                        />
+                        <Route
+                        path="/*"
+                        element={<NotFoundPage />} 
+                        />
+
+                    </Routes>
+                </Container>
+                {showLogInModal &&
+                        <LogInModal
+                            onDismiss={() => {setShowLogInModal(false)}}
+                            onLogInSuccesful={(user) => {
+                                setLoggedInUser(user);
+                                setShowLogInModal(false);
+                            }}
+                        />
+                }
+            </div>
+        </BrowserRouter>
     );
 }
 
